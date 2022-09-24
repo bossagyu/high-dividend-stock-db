@@ -1,0 +1,19 @@
+version: "3.3"
+
+services:
+  mysql:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: mysql_container
+    ports:
+      - 3306:3306
+    env_file: ./.env_file
+    # 初期テーブル制作と、初期データ投入
+    # データを外部マウントして永続化
+    # ログを外部マウントして永続化
+    volumes:
+      - ./settings/initdb.d:/docker-entrypoint-initdb.d
+      - ./data:/var/lib/mysql
+      - ./logs:/var/log/mysql
+
